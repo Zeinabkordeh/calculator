@@ -8,19 +8,69 @@ button {
     outline: none;
     border: rgb(28, 27, 27) solid 1px;
   }
-  
+
   button:hover {
-    background-color: #59575790;
-    border: rgb(108, 108, 108) solid 1px;
-  }
-  
-  .equals {
-    grid-column: 3 / 5;
-    background-color: rgb(243, 61, 29);
-  }
-  
-  .equals:hover {
-    background-color: rgb(228, 39, 15);
+    background-color: rgb(87, 87, 87);
   }
 
+ .memory{
+  background-color: yellow;
+  color: rgb(0, 0, 0);
+ }
+
+ .memory:hover{
+  background-color: rgb(176, 176, 37);
+ }
+
+ .clear{
+  background-color: red;
+  color: rgb(255, 255, 255);
+  grid-column: 1/2;
+ }
  
+ .clear:hover{
+  background-color: rgb(143, 6, 6);
+ }
+
+ .operator{
+  background-color: orange;
+  color: black;
+  font-size: 2rem;
+
+ }
+
+ .operator:hover{
+  background-color: rgb(215, 132, 16);
+ }
+
+ .equals{
+  background-color: rgb(29, 29, 150);
+  grid-column: 5/7;
+  grid-row: 5/5;
+  font-size: 2rem;
+ }
+
+ .equals:hover{
+  background-color: rgb(4, 4, 150);
+ }
+
+.special{
+  background-color: rgb(108, 108, 108);
+  border: rgb(28, 27, 27) solid 1px;
+  grid-row: 5/5;
+}
+
+.special:hover {
+  background-color: rgb(87, 87, 87);
+}
+
+.empty{
+  background-color: black;
+  border: none;
+  grid-column: 1/1;
+  grid-row: 4/6;
+}
+.empty:hover{
+  background-color: black;
+  border: none;
+}

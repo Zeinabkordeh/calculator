@@ -7,10 +7,10 @@ import Button from "./components/Button";
 
 const btnValues = [
   ["MS", "MC", "MR", "M+", "M-"],
-  ["AC", 7, 8, 9, "%", ""],
-  ["C", 4, 5, 6, "X", ""],
-  [1, 2, 3, "+"],
-  [0, ".", "="],
+  ["AC", 7, 8, 9, "%", "√"],
+  ["C", 4, 5, 6, "x", "÷"],
+  ["", 1, 2, 3, "+", "-"], 
+  [0, ".", "+/-", "="],
 ];
 
 const toLocaleString = (num) =>
@@ -19,6 +19,9 @@ const toLocaleString = (num) =>
 const removeSpaces = (num) => num.toString().replace(/\s/g, "");
 
 const App = () => {
+  const [memory, setMemory] = useState(0);
+  const [memoryValue, setMemoryValue] = useState(0);
+
   let [calc, setCalc] = useState({
     sign: "",
     num: 0,
@@ -67,14 +70,17 @@ const App = () => {
 
   const equalsClickHandler = () => {
     if (calc.sign && calc.num) {
-      const math = (a, b, sign) =>
-        sign === "+"
-          ? a + b
-          : sign === "-"
-          ? a - b
-          : sign === "X"
-          ? a * b
-          : a / b;
+      const math = (a, b, sign) => {
+        if (sign === "+") {
+          return a + b;
+        } else if (sign === "-") {
+          return a - b;
+        } else if (sign === "x" || sign === "X") {
+          return a * b;
+        } else if (sign === "÷") {
+          return a / b;
+        }
+      };
 
       setCalc({
         ...calc,
@@ -124,6 +130,53 @@ const App = () => {
     });
   };
 
+  const calculateSquareRoot = (number) => {
+    if (number >= 0) {
+      return Math.sqrt(number);
+    } else {
+      console.error("Cannot calculate square root of a negative number");
+      return "";
+    }
+  };
+
+  const squareRootClickHandler = () => {
+    setCalc({
+      ...calc,
+      num: toLocaleString(calculateSquareRoot(removeSpaces(calc.num))),
+      res: 0,
+    });
+  };
+
+  const memoryAddHandler = () => {
+    setMemoryValue(removeSpaces(calc.num));
+    setMemory(Number(memory) + Number(removeSpaces(calc.num)));
+  };
+  
+  const memorySubtractHandler = () => {
+    setMemoryValue(removeSpaces(calc.num));
+    setMemory(Number(memory) - Number(removeSpaces(calc.num)));
+  };
+  
+  const memoryClearHandler = () => {
+    setMemory(0);
+    setMemoryValue(0);
+  };
+  
+  const memoryRecallHandler = () => {
+    setCalc({
+      ...calc,
+      num: toLocaleString(memoryValue),
+    });
+  };
+
+
+  const clearClickHandler = () => {
+    setCalc({
+      ...calc,
+      num: "0", 
+    });
+  };
+
   return (
     <Wrapper>
       <Screen value={calc.num ? calc.num : calc.res} />
@@ -135,18 +188,30 @@ const App = () => {
               className={btn === "=" ? "equals" : ""}
               value={btn}
               onClick={
-                btn === "C"
+                btn === "AC"
                   ? resetClickHandler
-                  : btn === "+-"
+                  : btn === "C"
+                  ? clearClickHandler
+                  : btn === "+/-"
                   ? invertClickHandler
                   : btn === "%"
                   ? percentClickHandler
                   : btn === "="
                   ? equalsClickHandler
-                  : btn === "/" || btn === "X" || btn === "-" || btn === "+"
+                  : btn === "/" || btn === "x" || btn === "-" || btn === "+"
                   ? signClickHandler
                   : btn === "."
                   ? commaClickHandler
+                  : btn === "√"
+                  ? squareRootClickHandler
+                  : btn === "MS"
+                  ? memorySubtractHandler
+                  : btn === "MC"
+                  ? memoryClearHandler
+                  : btn === "MR"
+                  ? memoryRecallHandler
+                  : btn === "M+"
+                  ? memoryAddHandler
                   : numClickHandler
               }
             />
