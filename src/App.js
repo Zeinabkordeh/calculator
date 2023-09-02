@@ -79,7 +79,7 @@ const App = () => {
           return a * b;
         } else if (sign === "÷") {
           return a / b;
-        }
+        } 
       };
 
       setCalc({
@@ -115,8 +115,8 @@ const App = () => {
 
     setCalc({
       ...calc,
-      num: (num /= Math.pow(100, 1)),
-      res: (res /= Math.pow(100, 1)),
+      num: (num /= 100),
+      res: (res /= 100),
       sign: "",
     });
   };
@@ -147,18 +147,14 @@ const App = () => {
     });
   };
 
-  const memoryAddHandler = () => {
-    setMemoryValue(removeSpaces(calc.num));
-    setMemory(Number(memory) + Number(removeSpaces(calc.num)));
-  };
   
-  const memorySubtractHandler = () => {
+  const memorySaveHandler = () => {
     setMemoryValue(removeSpaces(calc.num));
     setMemory(Number(memory) - Number(removeSpaces(calc.num)));
   };
   
   const memoryClearHandler = () => {
-    setMemory(0);
+   setMemory(0);
     setMemoryValue(0);
   };
   
@@ -169,7 +165,18 @@ const App = () => {
     });
   };
 
+  const memoryPlusHandler = () => {
+    const num = Number(removeSpaces(!calc.res && calc.num ? calc.num : calc.res));
+    const newMemoryValue = Number(memoryValue) + num;
+    setMemoryValue(newMemoryValue);
+  };
 
+  const memoryMinusHandler = () => {
+    const num = Number(removeSpaces(!calc.res && calc.num ? calc.num : calc.res));
+    const newMemoryValue = Number(memoryValue) - num;
+    setMemoryValue(newMemoryValue);
+  };
+  
   const clearClickHandler = () => {
     setCalc({
       ...calc,
@@ -198,20 +205,22 @@ const App = () => {
                   ? percentClickHandler
                   : btn === "="
                   ? equalsClickHandler
-                  : btn === "/" || btn === "x" || btn === "-" || btn === "+"
+                  : btn === "÷" || btn === "x" || btn === "-" || btn === "+" 
                   ? signClickHandler
                   : btn === "."
                   ? commaClickHandler
                   : btn === "√"
                   ? squareRootClickHandler
                   : btn === "MS"
-                  ? memorySubtractHandler
+                  ? memorySaveHandler
                   : btn === "MC"
                   ? memoryClearHandler
                   : btn === "MR"
                   ? memoryRecallHandler
                   : btn === "M+"
-                  ? memoryAddHandler
+                  ? memoryPlusHandler
+                  : btn === "M-"
+                  ? memoryMinusHandler
                   : numClickHandler
               }
             />
